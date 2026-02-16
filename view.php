@@ -339,8 +339,8 @@ elseif ($category == 'date') {
             $columns = ['enrollment_date','result'];
             break;
         case 'DATEDIFF':
-            $sql = "SELECT DATEDIFF(CURDATE(), enrollment_date) AS result FROM students";
-            $columns = ['result'];
+            $sql = "SELECT enrollment_date, DATEDIFF(CURDATE(), enrollment_date) AS result FROM students";
+            $columns = ['enrollment_date','result'];
             break;
         case 'DATE_ADD':
             $sql = "SELECT enrollment_date, DATE_ADD(enrollment_date, INTERVAL 1 MONTH) AS result FROM students";
@@ -414,9 +414,17 @@ elseif ($category == 'date') {
             $sql = "SELECT MINUTE('12:35:50') AS result";
             $columns = ['result'];
             break;
+        case 'MONTH':
+            $sql = "SELECT enrollment_date, MONTH(enrollment_date) AS result FROM students";
+            $columns = ['enrollment_date','result'];
+            break;
         case 'MONTHNAME':
             $sql = "SELECT enrollment_date, MONTHNAME(enrollment_date) AS result FROM students";
             $columns = ['enrollment_date','result'];
+            break;
+        case 'NOW':
+            $sql = "SELECT NOW() AS result";
+            $columns = ['result'];
             break;
         case 'PERIOD_ADD':
             $sql = "SELECT PERIOD_ADD(202601,2) AS result";
@@ -517,16 +525,16 @@ elseif ($category == 'advanced') {
             $columns = ['student_name','result'];
             break;
         case 'COALESCE':
-            $sql = "SELECT COALESCE(scholarship,0) AS result FROM students";
-            $columns = ['result'];
+            $sql = "SELECT student_name, COALESCE(scholarship,0) AS result FROM students";
+            $columns = ['student_name','result'];
             break;
         case 'CAST':
             $sql = "SELECT CAST(gpa AS CHAR) AS result FROM students";
             $columns = ['result'];
             break;
         case 'NULLIF':
-            $sql = "SELECT NULLIF(gpa,4.0) AS result FROM students";
-            $columns = ['result'];
+            $sql = "SELECT student_name, NULLIF(gpa,4.0) AS result FROM students";
+            $columns = ['student_name','result'];
             break;
         case 'BIN':
             $sql = "SELECT student_id, BIN(student_id) AS result FROM students";
@@ -547,6 +555,42 @@ elseif ($category == 'advanced') {
         case 'CURRENT_USER':
             $sql = "SELECT CURRENT_USER() AS result";
             $columns = ['result'];
+            break;
+        case 'USER':
+            $sql = "SELECT USER() AS result";
+            $columns = ['result'];
+            break;
+        case 'SYSTEM_USER':
+            $sql = "SELECT SYSTEM_USER() AS result";
+            $columns = ['result'];
+            break;
+        case 'SESSION_USER':
+            $sql = "SELECT SESSION_USER() AS result";
+            $columns = ['result'];
+            break;
+        case 'LAST_INSERT_ID':
+            $sql = "SELECT student_id, LAST_INSERT_ID() AS result FROM students LIMIT 1";
+            $columns = ['student_id','result'];
+            break;
+        case 'ISNULL':
+            $sql = "SELECT student_name, ISNULL(scholarship) AS result FROM students";
+            $columns = ['student_name','result'];
+            break;
+        case 'IF':
+            $sql = "SELECT student_name, IF(gpa>=3.0,'Pass','Fail') AS result FROM students";
+            $columns = ['student_name','result'];
+            break;
+        case 'CONVERT':
+            $sql = "SELECT student_name, CONVERT(gpa, CHAR) AS result FROM students";
+            $columns = ['student_name','result'];
+            break;
+        case 'CONNECTION_ID':
+            $sql = "SELECT CONNECTION_ID() AS result";
+            $columns = ['result'];
+            break;
+        case 'BINARY':
+            $sql = "SELECT student_name, BINARY(student_name) AS result FROM students";
+            $columns = ['student_name','result'];
             break;
         default:
             echo "Invalid function!";
